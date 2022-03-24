@@ -1,0 +1,25 @@
+name: apptodo
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: login to docker
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PW: ${{ secrets.DOCKER_PW }}
+      run: |
+        docker login -u $DOCKER_USERNAME -p $DOCKER_PW
+    - name: build docker image
+      run: |
+        docker image build -t travisp6/todoapp:v1 .
+        docker push travisp6/todoapp:v1
