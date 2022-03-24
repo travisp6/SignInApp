@@ -21,5 +21,5 @@ jobs:
         docker login -u $DOCKER_USERNAME -p $DOCKER_PW
     - name: build docker image
       run: |
-        docker image build -t travisp6/gitaction:todo .
-        docker push travisp6/gitaction:todo
+        docker image build -t travisp6/todoapp:todo .
+        docker push travisp6/todoapp:todo
