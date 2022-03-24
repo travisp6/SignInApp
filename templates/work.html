@@ -4,5 +4,125 @@
 {% endblock%}
 
 {% block content %}
-    work content
+<div class="content">
+    <script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
+    <h1 style="text-align: center">To do list for {{ current_user.username }}</h1>
+    <br>
+    <table class="table table-hover table-dark sortable" style="text-align: center">
+        <tr>
+            <th>Date Added</th>
+            <th>Task</th>
+            <th>Task Added By</th>
+            <th>Access</th>
+            <th>Actions</th>
+            <th></th>
+        </tr>
+        {% for task in tasks %}
+            {% if task.status == 1 and task.access_level == 'public' %}
+                <tr>
+                    <td>{{ task.date_created.date() }}</td>
+                    <td>{{ task.content }}</td>
+                    <td>{{ task.owner }}</td>
+                    <td>{{ task.access_level }}<br>
+                        {% if task.access_level == 'public' %}
+                        <a href="/access_level/{{task.id}}">set to private</a>
+                        </a>
+                        {% endif %}
+                        {% if task.access_level == 'private' %}
+                        <a href="/access_level_public/{{task.id}}">set to public</a>
+                        </a>
+                        {% endif %}
+
+                    </td>
+                    <td>
+                        <a href="/delete/{{task.id}}" onClick="return confirm('Delete this task?');">Delete</a>
+                        <br>
+                        <a href="/update/{{task.id}}">Update</a>
+                        <br>
+                        <a href="/complete/{{task.id}}">Complete</a>
+                    </td>
+                    <td>
+
+                    </td>
+                </tr>
+            {% endif %}
+        {% endfor %}   
+    </table>     
+
+    <table class="table table-hover table-dark sortable" style="text-align: center">
+        <h1 style="text-align: center">Private tasks for {{ current_user.username }}</h1><br>
+        <tr>
+            <th>Date Added</th>
+            <th>Task</th>
+            <th>Task Added By</th>
+            <th>Access</th>
+            <th>Actions</th>
+            <th></th>
+        </tr>
+        {% for task in tasks %}
+            {% if task.status == 1 and task.access_level == 'private' %}
+                <tr>
+                    <td>{{ task.date_created.date() }}</td>
+                    <td>{{ task.content }}</td>
+                    <td>{{ task.owner }}</td>
+                    <td>{{ task.access_level }}<br>
+                        {% if task.access_level == 'public' %}
+                        <a href="/access_level/{{task.id}}">set to private</a>
+                        </a>
+                        {% endif %}
+                        {% if task.access_level == 'private' %}
+                        <a href="/access_level_public/{{task.id}}">set to public</a>
+                        </a>
+                        {% endif %}
+
+                    </td>
+                    <td>
+                        <a href="/delete/{{task.id}}" onClick="return confirm('Delete this task?');">Delete</a>
+                        <br>
+                        <a href="/update/{{task.id}}">Update</a>
+                        <br>
+                        <a href="/complete/{{task.id}}">Complete</a>
+                    </td>
+                    <td>
+
+                    </td>
+                </tr>
+            {% endif %}
+        {% endfor %}   
+    </table>  
+    <br>
+    <form action="/work" method="POST" style="text-align: center">
+        <input type="text" name="content" id="content" style="width:50%">
+        <br><br>
+        <input type="submit" value="Add Task" class="btn btn-outline btn-success">
+    </form>
+    <br>
+        <table class="table table-hover table-dark sortable" style="text-align: center">
+        <h1 style="text-align: center">Completed</h1>
+        <br>
+        <tr>
+            <th>Date Completed</th>
+            <th>Task</th>
+            <th>Task Added By</th>
+            <th>Access</th>
+            <th>Actions</th>
+        </tr>
+        {% for task in tasks %}
+        {% if task.status == 0 %}
+            <tr>
+                <td>{{ task.date_created.date() }}</td>
+                <td>{{ task.content }}</td>
+                <td>{{ task.owner }}</td>
+                <td>{{ task.access_level }}</td>
+                <td>
+                    <a href="/delete/{{task.id}}" onClick="return confirm('Delete this task?');">Delete</a>
+                    <br>
+                    <a href="/update/{{task.id}}">Update</a>
+                </td>
+            </tr>
+        {% endif %}
+    {% endfor %}    
+    </table>
+
+</div>
 {% endblock %}

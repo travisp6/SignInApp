@@ -1,8 +1,80 @@
 {% extends 'base.html' %}
 {% block title %}
-    Personal Page
+    Public Page
 {% endblock%}
 
 {% block content %}
-    Personal Content
+<h1 style="text-align: center">All user tasks</h1>
+<script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
+<table class="table table-hover table-dark sortable">
+    <thead>
+        <tr>
+            <th scope="col">Task ID</th>
+            <th scope="col">Date Added</th>
+            <th scope="col">Task</th>
+            <th scope="col">Task Added By</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in items %}
+            {% if item.status == 1 and item.access_level != 'private' %}
+                <tr>
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.date_created.date() }}</td>
+                    <td>{{ item.content }}</td>
+                    <td>{{ item.owner }}</td>
+                    <td>{{ item.username }}</td>
+
+                    {% if user == 'Admin' %}
+                    <td>
+                        <a href="/delete/{{item.id}}" onClick="return confirm('Delete this task?');">Delete</a>
+                        <br>
+                        <a href="/update/{{item.id}}">Update</a>
+                        <br>
+                        <a href="/complete/{{item.id}}">Complete</a>
+                    </td>
+                    {% endif %}
+
+                </tr>
+
+            {% endif %}
+
+                
+        {% endfor %}
+
+    </tbody>
+</table>
+
+<h1 style="text-align: center">All completed tasks</h1>
+<table class="table table-hover table-dark sortable">
+    <thead>
+        <tr>
+            <th scope="col">Task ID</th>
+            <th scope="col">Date Completed</th>
+            <th scope="col">Task</th>
+            <th scope="col">Task Added By</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in items %}
+            {% if item.status == 0 %}
+                <tr>
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.date_created.date() }}</td>
+                    <td>{{ item.content }}</td>
+                    <td>{{ item.owner }}</td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+
+    </tbody>
+</table>
+
 {% endblock %}
+
+
+
+<!--<td>
+    <button href="/delete/{{task.id}}", class="btn btn-outline btn-info">Delete</button>
+    <button class="btn btn-outline btn-success", href="/update/{{task.id}}">Update</button>
+</td>
