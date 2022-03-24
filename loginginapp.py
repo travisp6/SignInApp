@@ -21,7 +21,6 @@ login_manager.login_view = "login_page"
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer(), primary_key=True)
     username = db.Column(db.String(length=40), unique=True, nullable=False)
@@ -48,7 +47,7 @@ class Item(db.Model):
     status = db.Column(db.Integer(), default=1)
     access_level = db.Column(db.Integer(), default='public')
 
-
+    
     def __repr__(self):
         return '<Task %r>' % self.id
 
